@@ -32,7 +32,8 @@ class Customer(models.Model):
     last_name = models.CharField(max_length=225)
     email = models.EmailField(unique=True)
     phone = models.TextField(max_length=225)
-    birth_date = models.DateField(null=True,choices=MEMBERSHIP_CHOICES,default=MEMBERSHIP_BROONZE)
+    membership = models.CharField(null=True,choices=MEMBERSHIP_CHOICES,default=MEMBERSHIP_BROONZE)
+    birth_date = models.DateField(null=True)
 
 class Order(models.Model):
     PAYMENT_STATUS_PENDING= 'P'
