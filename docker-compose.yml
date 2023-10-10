@@ -1,0 +1,10 @@
+db:
+  image: mysql:8.0
+  ports:
+    - "3306:3306"
+  environment:
+    - MYSQL_ROOT_HOSTS=%
+    - MYSQL_DATABASE=spring_boot_mysql
+    - MYSQL_ALLOW_EMPTY_PASSWORD=1
+  volumes:
+    - ./docker/volume_mysql:/var/lib/mysql
