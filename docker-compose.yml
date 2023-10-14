@@ -6,3 +6,5 @@ db:
     - MYSQL_ROOT_HOSTS=%
     - MYSQL_DATABASE=spring_boot_mysql
     - MYSQL_ALLOW_EMPTY_PASSWORD=1
+  volumes:
+    - ./docker/volume_mysql:/var/lib/mysql
