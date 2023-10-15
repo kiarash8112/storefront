@@ -36,11 +36,11 @@ def product_detail(request,id):
             product.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         
-@api_view()
+@api_view(['GET','POST'])
 def collection_list(request):
     if request.method == "GET":
         queryset = Collection.objects.annotate(products_count=Count('featured_product')).all()
-        serializer = CollectionSerializer(queryset,many = True)
+        serializer = CollectionSerializer(queryset, many=True)
         return Response(serializer.data)
     elif request.method=="POST":
         serializer = CollectionSerializer(data=request.data)
@@ -48,6 +48,21 @@ def collection_list(request):
         serializer.save()
         return Response(serializer.data,status=status.HTTP_201_CREATED)
 
-@api_view()
-def collection_detail(request,pk):
-      return Response('ok')
+@api_view(['GET', 'PUT', 'DELETE'])
+def collection_detail(request, pk):
+    collection = get_object_or_404(
+        Collection.objects.annotate(
+            products_count=Count('featured_product')), pk=pk)
+    if request.method == 'GET':
+        serializer = CollectionSerializer(collection)
+        return Response(serializer.data)
+    elif request.method == 'PUT':
+        serializer = CollectionSerializer(collection, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+    elif request.method == 'DELETE':
+        if collection.featured_product.count() > 0:
+            return Response({'error': 'Collection cannot be deleted because it includes one or more products.'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        collection.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
