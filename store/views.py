@@ -4,20 +4,15 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.generics import ListCreateAPIView
 from .models import Product,Collection
 from .serializer import ProductSerializer,CollectionSerializer
 
 
-class ProductList(APIView):
-    def get(self,request):
-        queryset = Product.objects.select_related('collection').all()
-        serializer = ProductSerializer(queryset,many = True)
-        return Response(serializer.data)
-    def put(self,request):
-        serializer = ProductSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save( )
-        return Response(serializer.data,status=status.HTTP_201_CREATED)
+class ProductList(ListCreateAPIView):
+    queryset = Product.objects.select_related('collection').all()
+    serializer_class = ProductSerializer
+
 
  
 class ProductDetails(APIView):
@@ -38,16 +33,9 @@ class ProductDetails(APIView):
             product.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         
-class CollectionList(APIView):
-    def get(self,request):
-        queryset = Collection.objects.annotate(products_count=Count('featured_product')).all()
-        serializer = CollectionSerializer(queryset, many=True)
-        return Response(serializer.data)
-    def post(self,request):
-        serializer = CollectionSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data,status=status.HTTP_201_CREATED)
+class CollectionList(ListCreateAPIView):
+    queryset = Collection.objects.annotate(products_count=Count('featured_product')).all()
+    serializer_class = CollectionSerializer
 
 class CollectionDetails(APIView):
    
