@@ -3,9 +3,10 @@ from django.db.models.aggregates import Count
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.viewsets import ModelViewSet
-from .models import Product, Collection, Review
-from .serializer import ProductSerializer, CollectionSerializer, ReviewSerializer
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
+from rest_framework.mixins import CreateModelMixin
+from .models import Product, Collection, Review, Cart
+from .serializer import ProductSerializer, CollectionSerializer, ReviewSerializer, CartSerializer
 
 
 class ProductViewSet(ModelViewSet):
@@ -36,7 +37,6 @@ class CollectionViewSet(ModelViewSet):
 
 
 class ReviewViewSet(ModelViewSet):
-    queryset = Review.objects.all()
     serializer_class = ReviewSerializer
 
     def get_queryset(self):
@@ -44,3 +44,8 @@ class ReviewViewSet(ModelViewSet):
 
     def get_serializer_context(self):
         return {'product_id': self.kwargs['product_pk']}
+
+
+class CartViewSet(CreateModelMixin, GenericViewSet):
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
