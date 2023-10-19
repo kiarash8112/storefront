@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'store',
     'tags',
     'likes',
+    'core',
 ]
 
 INTERNAL_IPS = [
@@ -90,9 +91,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'storefront',
-        'USER':'root',
-        'HOST':'127.0.0.1',
-        'PORT':'3306'
+        'USER': 'root',
+        'HOST': '127.0.0.1',
+        'PORT': '3306'
     }
 }
 
@@ -141,5 +142,5 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
-    'COERCE_DECIMAL_TO_STRING':False
+    'COERCE_DECIMAL_TO_STRING': False
 }
