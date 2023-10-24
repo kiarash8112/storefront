@@ -110,8 +110,10 @@ class CustomerViewSet(ModelViewSet):
 
 
 class OrderViewSet(ModelViewSet):
-    serializer_class = OrderSerializer
-    permission_classes = [IsAuthenticated]
+    def get_permissions(self):
+        if self.request.method in ['PATCH', 'DELETE']:
+            return [IsAdminUser]
+        return [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         serializer = CreateOrderSerializer(
