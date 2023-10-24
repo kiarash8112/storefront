@@ -146,7 +146,7 @@ class CreateOrderSerializer(serializers.Serializer):
                     raise serializers.ValidationError('cart is empty')
                 return cart_id
 
-            (customer, created) = Customer.objects.get_or_create(
+            customer = Customer.objects.create(
                 user_id=self.context['user_id'])
             order = Order.objects.create(customer=customer)
 
