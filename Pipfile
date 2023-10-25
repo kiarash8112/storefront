@@ -13,6 +13,7 @@ djoser = "*"
 djangorestframework-simplejwt = "*"
 django-filter = "*"
 redis = "*"
+celery = "*"
 
 [dev-packages]
 
