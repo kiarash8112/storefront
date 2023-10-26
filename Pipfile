@@ -15,6 +15,7 @@ django-filter = "*"
 redis = "*"
 celery = "*"
 model-bakery = "*"
+django-redis = "*"
 
 [dev-packages]
 pytest = "*"
